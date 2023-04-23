@@ -7,9 +7,9 @@ import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import path from "path";
 import { fileURLToPath } from "url";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+import { register } from "./controllers/auth.js";
 import multer from "multer";
+import authRoutes from "./routes/auth.js";
 import GridFsStorage from "multer-gridfs-storage";
 import Grid from "gridfs-stream";
 
@@ -62,10 +62,7 @@ mongoose
   .catch((error) => console.log(`${error} did not connect`));
 
 // API routes
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.use("/auth", authRoutes);
 
-app.post("/upload", upload.single("file"), (req, res) => {
-  res.json({ file: req.file });
-});
+/* ROUTES WITH FILES */
+app.post("/auth/register", upload.single("picture"), register);
