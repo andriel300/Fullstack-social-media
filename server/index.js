@@ -65,4 +65,4 @@ mongoose
 app.use("/auth", authRoutes);
 
 /* ROUTES WITH FILES */
-app.post("/auth/register", upload.single("picture"), register);
+app.post("/auth/register", upload.single("picture"), verifyToken, register);
