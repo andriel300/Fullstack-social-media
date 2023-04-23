@@ -10,8 +10,12 @@ import { fileURLToPath } from "url";
 import { register } from "./controllers/auth.js";
 import multer from "multer";
 import authRoutes from "./routes/auth.js";
+import userRoutes from "./routes/users.js";
+import postRoutes from "./routes/posts.js";
+import { createPost } from "./controllers/posts.js";
 import GridFsStorage from "multer-gridfs-storage";
 import Grid from "gridfs-stream";
+import { verifyToken } from "./middleware/auth.js";
 
 // Load environment variables from .env file
 dotenv.config();
@@ -63,6 +67,9 @@ mongoose
 
 // API routes
 app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+app.use("/posts", postRoutes);
 
 /* ROUTES WITH FILES */
-app.post("/auth/register", upload.single("picture"), verifyToken, register);
+app.post("/auth/register", upload.single("picture"), register);
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
